@@ -137,7 +137,7 @@ const getAreas = asyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new responseApi(200, findData, "DATA IS FOUND"))
+    .json(findData)
 })
 
 
