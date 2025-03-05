@@ -14,4 +14,4 @@ const CityBasedSchma = new mongoose.Schema({
     }
 })
 
-export const City_Location = mongoose.models.city_location || mongoose.model('City_location', CityBasedSchma);
+export const City_Location = mongoose.models.City_location || mongoose.model('City_location', CityBasedSchma);
