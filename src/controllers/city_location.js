@@ -118,7 +118,7 @@ const InsertApi = asyncHandler(async (req, res) => {
 const getAreas = asyncHandler(async (req, res, next) => {
 
   const { city } = req.query;
-
+  console.log(city)
   if (!city) {
     const error = new Error("city name is not found")
     error.statusCode = 404;
