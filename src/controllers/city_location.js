@@ -127,13 +127,13 @@ const getAreas = asyncHandler(async (req, res, next) => {
   }
 
   const findData = await City_Location.find({ city })
-  console.log("query data find or not " , findData)
+  // console.log("query data find or not " , findData)
 
-  if (findData.length == 0) {
-    const error = new Error("data is not found")
-    error.statusCode = 404;
-    throw error;
-  }
+  // if (findData.length == 0) {
+  //   const error = new Error("data is not found")
+  //   error.statusCode = 404;
+  //   throw error;
+  // }
 
   return res
     .status(200)
