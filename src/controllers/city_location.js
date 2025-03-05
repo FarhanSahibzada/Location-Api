@@ -1,65 +1,146 @@
-import { city_Location} from '../Schema/city_location.js'
+import { city_Location } from '../Schema/city_location.js'
 import mongoose from 'mongoose'
-import {responseApi} from '../utlis/responseApi.js'
+import { responseApi } from '../utlis/responseApi.js'
+import { asyncHandler } from '../utlis/asynchandler.js'
 
-const InsertApi = async  (req,res, next)=>{
+const InsertApi = asyncHandler(async (req, res) => {
 
-  const locations =  await city_Location.insertMany([
-        {
-            city: "Karachi",
-            town: "Gulshan-e-Iqbal",
-            routes: { latitude: 24.9263, longitude: 67.1123 }
-          },
-          {
-            city: "Karachi",
-            town: "Saddar",
-            routes: { latitude: 24.8547, longitude: 67.0271 }
-          },
-          {
-            city: "Karachi",
-            town: "Clifton",
-            routes: { latitude: 24.8086, longitude: 67.0320 }
-          },
-          {
-            city: "Karachi",
-            town: "North Nazimabad",
-            routes: { latitude: 24.9386, longitude: 67.0369 }
-          },
-          {
-            city: "Karachi",
-            town: "Korangi",
-            routes: { latitude: 24.8293, longitude: 67.1377 }
-          },
-          {
-            city: "Karachi",
-            town: "Malir",
-            routes: { latitude: 24.8978, longitude: 67.2160 }
-          },
-          {
-            city: "Karachi",
-            town: "Defence (DHA)",
-            routes: { latitude: 24.8121, longitude: 67.0579 }
-          },
-          {
-            city: "Karachi",
-            town: "Lyari",
-            routes: { latitude: 24.8554, longitude: 66.9904 }
-          },
-          {
-            city: "Karachi",
-            town: "Shah Faisal Colony",
-            routes: { latitude: 24.8840, longitude: 67.1574 }
-          },
-          {
-            city: "Karachi",
-            town: "Gulistan-e-Jauhar",
-            routes: { latitude: 24.9049, longitude: 67.1222 }
-       }
-    ])
-    
-    res
+  const locations = await city_Location.insertMany([
+    {
+      city: "Karachi",
+      town: "Keamari",
+      routes: { latitude: 24.8101, longitude: 66.9750 }
+    },
+    {
+      city: "Karachi",
+      town: "SITE Area",
+      routes: { latitude: 24.9135, longitude: 66.9942 }
+    },
+    {
+      city: "Karachi",
+      town: "Gizri",
+      routes: { latitude: 24.8110, longitude: 67.0417 }
+    },
+    {
+      city: "Karachi",
+      town: "Burns Road",
+      routes: { latitude: 24.8569, longitude: 67.0115 }
+    },
+    {
+      city: "Karachi",
+      town: "Soldier Bazaar",
+      routes: { latitude: 24.8712, longitude: 67.0278 }
+    },
+    {
+      city: "Karachi",
+      town: "Kharadar",
+      routes: { latitude: 24.8505, longitude: 66.9972 }
+    },
+    {
+      city: "Karachi",
+      town: "Mehran Town",
+      routes: { latitude: 24.8295, longitude: 67.1362 }
+    },
+    {
+      city: "Karachi",
+      town: "Shershah",
+      routes: { latitude: 24.9022, longitude: 66.9747 }
+    },
+    {
+      city: "Karachi",
+      town: "Shadman Town",
+      routes: { latitude: 24.9760, longitude: 67.0443 }
+    },
+    {
+      city: "Karachi",
+      town: "Buffer Zone",
+      routes: { latitude: 24.9725, longitude: 67.0486 }
+    },
+    {
+      city: "Karachi",
+      town: "Gulshan-e-Maymar",
+      routes: { latitude: 25.0337, longitude: 67.0837 }
+    },
+    {
+      city: "Karachi",
+      town: "Federal B. Area",
+      routes: { latitude: 24.9398, longitude: 67.0856 }
+    },
+    {
+      city: "Karachi",
+      town: "Johar Mor",
+      routes: { latitude: 24.9070, longitude: 67.1234 }
+    },
+    {
+      city: "Karachi",
+      town: "Bahria Town Karachi",
+      routes: { latitude: 25.0520, longitude: 67.3020 }
+    },
+    {
+      city: "Karachi",
+      town: "Port Qasim",
+      routes: { latitude: 24.7741, longitude: 67.3527 }
+    },
+    {
+      city: "Karachi",
+      town: "Hawksbay",
+      routes: { latitude: 24.8103, longitude: 66.8899 }
+    },
+    {
+      city: "Karachi",
+      town: "Bin Qasim Town",
+      routes: { latitude: 24.7967, longitude: 67.3482 }
+    },
+    {
+      city: "Karachi",
+      town: "Jamshed Town",
+      routes: { latitude: 24.8739, longitude: 67.0436 }
+    },
+    {
+      city: "Karachi",
+      town: "Rashid Minhas Road",
+      routes: { latitude: 24.9182, longitude: 67.1205 }
+    },
+    {
+      city: "Karachi",
+      town: "Super Highway",
+      routes: { latitude: 25.0425, longitude: 67.1993 }
+    }
+  ])
+
+  return res
     .status(200)
-    .json(new responseApi(200 , locations , "successfully data send"))
-    
+    .json(new responseApi(200, locations, "successfully data send"))
 
+})
+
+
+const getAreas = asyncHandler(async (req, res, next) => {
+
+  const { city } = req.query;
+
+  if (!city) {
+    const error = new Error("city name is not found")
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const findData = await city_Location.find({ city: city })
+
+  if (findData.length == 0) {
+    const error = new Error("data is not found")
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return res
+    .status(200)
+    .json(new responseApi(200, findData, "DATA IS FOUND"))
+
+})
+
+
+export {
+  InsertApi,
+  getAreas
 }

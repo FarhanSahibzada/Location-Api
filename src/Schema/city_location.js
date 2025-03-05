@@ -5,7 +5,7 @@ const CityBasedSchma = new mongoose.Schema({
     city: {
         type: String,
     },
-    townname: {
+    town: {
         type: String
     },
     routes: {
