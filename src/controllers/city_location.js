@@ -1,11 +1,11 @@
-import { City_Location } from '../Schema/city_location.js'
+import { City } from '../Schema/city_location.js'
 import mongoose from 'mongoose'
 import { responseApi } from '../utlis/responseApi.js'
 import { asyncHandler } from '../utlis/asynchandler.js'
 
 const InsertApi = asyncHandler(async (req, res) => {
 
-  const locations = await city_Location.insertMany([
+  const locations = await City.insertMany([
     {
       city: "Karachi",
       town: "Keamari",
@@ -126,7 +126,7 @@ const getAreas = asyncHandler(async (req, res, next) => {
     throw error;
   }
 
-  const findData = await City_Location.find()
+  const findData = await City.find()
   // console.log("query data find or not " , findData)
 
   // if (findData.length == 0) {
