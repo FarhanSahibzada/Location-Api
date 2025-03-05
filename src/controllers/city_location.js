@@ -117,8 +117,9 @@ const InsertApi = asyncHandler(async (req, res) => {
 
 const getAreas = asyncHandler(async (req, res, next) => {
 
-  const { city } = req.query;
-  console.log(city)
+  let { city } = req.query;
+  console.log("cityname", city)
+
   if (!city) {
     const error = new Error("city name is not found")
     error.statusCode = 404;
@@ -126,6 +127,7 @@ const getAreas = asyncHandler(async (req, res, next) => {
   }
 
   const findData = await city_Location.find({ city })
+  console.log("database query result ", findData)
 
   if (findData.length == 0) {
     const error = new Error("data is not found")
