@@ -1,4 +1,4 @@
-import { city_Location } from '../Schema/city_location.js'
+import { City_Location } from '../Schema/city_location.js'
 import mongoose from 'mongoose'
 import { responseApi } from '../utlis/responseApi.js'
 import { asyncHandler } from '../utlis/asynchandler.js'
@@ -118,16 +118,14 @@ const InsertApi = asyncHandler(async (req, res) => {
 const getAreas = asyncHandler(async (req, res, next) => {
 
   let { city } = req.query;
-  console.log("cityname", city)
-
+  
   if (!city) {
     const error = new Error("city name is not found")
     error.statusCode = 404;
     throw error;
   }
 
-  const findData = await city_Location.find({ city })
-  console.log("database query result ", findData)
+  const findData = await City_Location.find({ city })
 
   if (findData.length == 0) {
     const error = new Error("data is not found")
@@ -138,7 +136,6 @@ const getAreas = asyncHandler(async (req, res, next) => {
   return res
     .status(200)
     .json(new responseApi(200, findData, "DATA IS FOUND"))
-
 })
 
 
