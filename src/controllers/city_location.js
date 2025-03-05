@@ -126,7 +126,7 @@ const getAreas = asyncHandler(async (req, res, next) => {
     throw error;
   }
 
-  const findData = await City_Location.find({ city })
+  const findData = await City_Location.find()
   // console.log("query data find or not " , findData)
 
   // if (findData.length == 0) {
