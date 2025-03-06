@@ -1,5 +1,4 @@
-import { City } from '../schema/city_location.js'
-import mongoose from 'mongoose'
+import { City } from '../Schema/city_location.js'
 import { responseApi } from '../utlis/responseApi.js'
 import { asyncHandler } from '../utlis/asynchandler.js'
 
