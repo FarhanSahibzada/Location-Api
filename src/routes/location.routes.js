@@ -1,9 +1,10 @@
-import {Router} from 'express'
-import {getAreas, InsertApi} from '../controllers/city_location.js'
+import { Router } from 'express'
+import { getAreas, InsertApi } from '../controllers/city_location.js'
 
 const router = Router()
 
 router.route('/').post(InsertApi)
+// router.get('/', InsertApi)
 router.route('/findarea').get(getAreas)
 
 

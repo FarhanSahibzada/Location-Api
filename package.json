@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon -r dotenv/config src/index.js"
+    "dev": "node src/index.js",
+    "start": "nodemon -r dotenv/config src/index"
   },
   "keywords": [],
   "author": "",
