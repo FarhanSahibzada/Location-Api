@@ -113,32 +113,6 @@ const InsertApi = asyncHandler(async (req, res) => {
 
 })
 
-
-// const getAreas = asyncHandler(async (req, res, next) => {
-
-//   let { city } = req.query;
-//   console.log("query name " , city)
-
-//   if (!city) {
-//     const error = new Error("city name is not found")
-//     error.statusCode = 404;
-//     throw error;
-//   }
-
-//   const findData = await City.find()
-//   // console.log("query data find or not " , findData)
-
-//   // if (findData.length == 0) {
-//   //   const error = new Error("data is not found")
-//   //   error.statusCode = 404;
-//   //   throw error;
-//   // }
-
-//   return res
-//     .status(200)
-//     .json(findData)
-// })
-
 const getAreas = async (req, res) => {
   try {
     let { city } = req.query;
@@ -150,19 +124,18 @@ const getAreas = async (req, res) => {
       throw error;
     }
 
-    const findData = await City.find()
-    console.log(findData)
-    // console.log("query data find or not " , findData)
-
-    // if (findData.length == 0) {
-    //   const error = new Error("data is not found")
-    //   error.statusCode = 404;
-    //   throw error;
-    // }
+    const findData = await City.find({city})
+  
+    if (findData.length == 0) {
+      const error = new Error("data is not found")
+      error.statusCode = 404;
+      throw error;
+    }
 
     return res
       .status(200)
-      .json(findData)
+      .json(new responseApi(200 , findData, "data is successfully fetch"))
+
   } catch (error) {
     console.log(error.message)
     return res.status(500).json({
