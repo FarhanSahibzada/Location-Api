@@ -1,6 +1,7 @@
 import { app } from './app.js'
 import { connectDatabase } from './dbconnect/db.js'
 
+
 connectDatabase()
     .then(() => {
         app.listen(process.env.PORT || 8000, () => {
