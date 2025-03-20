@@ -20,8 +20,8 @@ export default function Authlayout({ children , authentication = true }) {
     } , [navigate , authstatus , authentication])
  
 
-    return loader ? <div className="min-h-screen font-bold text-blue-600 flex justify-center items-center">...Loading</div> : 
-    <div className="flex flex-col min-h-screen items-center justify-center">
+    return loader ? <div className="flex justify-center items-center min-h-screen font-bold text-blue-600">...Loading</div> : 
+    <div className="flex  min-h-screen items-center justify-center">
         {children}
     </div>
 }

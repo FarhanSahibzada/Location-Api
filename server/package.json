@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "node src/index.js",
-    "start": "nodemon -r dotenv/config src/index"
+    "start": "nodemon -r dotenv/config --experimental-json-modules src/index"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0",
     "ioredis": "^5.6.0",
     "mongoose": "^8.12.0"
   }

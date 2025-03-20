@@ -1,29 +1,47 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import authService from './Appwrite/Auth';
-import { login, logout } from './Store/AuthSlice';
-import { Header, Aside } from './Components';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import AuthServices from './firebase/authFun';
+import { login } from './Store/AuthSlice';
 
 function App() {
 
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  // ESLint will not complain about missing dependencies now
+  const sendRequest = useCallback(async () => {
+    try {
+      const response = await AuthServices.getCurrentUser()
+      if (response) {
+        console.log("mila ha")
+      }
+    } catch (error) {
+      console.log("user not found", error)
+      navigate('/sign-in')
+    }
+  }, [navigate])
+
   useEffect(() => {
-    setLoading(true)
+    const fetchUser = async () => {
+      setLoading(true)
+      try {
+        await sendRequest()
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  }, [])
+    fetchUser()
+  }, [sendRequest])
 
 
   return !loading ? (
-    <div className='flex gap-1 flex-col-reverse sm:flex-row bg-base-200  overflow-hidden'>
-      <div className='w-full'>
-        <Outlet />
-      </div>
+    <div className='w-full'>
+      <Outlet />
     </div>
-
   ) : (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-slate-400 to-base-300">
       <div className="flex space-x-3 mb-6">

@@ -1,6 +1,7 @@
 import Sign_in from "./Sign_in";
+import Home from "./Home";
 
 export  {
-     Sign_in,
-
+     Home,
+     Sign_in
 }

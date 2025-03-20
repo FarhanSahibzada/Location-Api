@@ -37,6 +37,7 @@ const Input = ({ type = 'text', label, placeholder, className, name, control, ..
                         ref={ref}
                         id={id}
                         type={type}
+                        placeholder={placeholder}
                     />
                     {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
                 </div>

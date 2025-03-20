@@ -1,21 +1,32 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "./firebase.auth.js";
+import { auth } from "./firebase.config";
+import axios from "axios";
+import {useDispatch} from 'react-redux'
+import { login } from "../Store/AuthSlice";
 
-export class authService {
+export class AuthService {
+    private auth;
     constructor() {
         this.auth = auth;
     }
 
-    async createAccount({ username, email, password }) {
+    async createAccount({ name, email, password }) {
+        const dispatch = useDispatch()
         try {
             const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
             const user = userCredential.user;
             if (user) {
                 const data = {
-                    name: username,
-                    email: email
+                    name: name,
+                    email: email,
+                    firebaseUid :user.uid 
                 }
+                const response = await axios.post(`${import.meta?.env.VITE_BACKEND_URL}/register`, data);
+                //  if(response && response.data){
+                //     dispatch(login(response.data?.data))                
+                //  }
             }
+
 
         } catch (error) {
             console.error("Error creating account:", error.code, error.message);
@@ -46,15 +57,16 @@ export class authService {
         return new Promise((resolve) => {
             onAuthStateChanged(this.auth, (user) => {
                 if (user) {
-                    resolve(user);
+                    console.log("Current user:", user.uid);
+                    resolve(user.uid);  // 🟢 Return user UID
                 } else {
-                    resolve(null);
+                    console.log("No user is signed in.");
+                    resolve(null);  // 🔴 No user found
                 }
-            });
-        });
+            })
+        })
     }
 }
+const authServices = new AuthService()
 
-const AuthServices = new authService()
-
-export default AuthServices;
+export default authServices;
