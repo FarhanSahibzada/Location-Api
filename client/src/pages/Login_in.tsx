@@ -7,8 +7,7 @@ import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import authServices from '../firebase/authFun'
 
-export interface authProps {
-    name: string,
+export interface loginProps {
     email: string,
     password: string,
 }
@@ -18,22 +17,20 @@ export interface authProps {
 //     return response.data;
 // }
 
-export default function Sign_in() {
-    const { control, handleSubmit } = useForm<authProps>({
+export default function Login_in() {
+    const { control, handleSubmit } = useForm<loginProps>({
         defaultValues: {
-            name: '',
             email: '',
             password: ''
         }
     })
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setloading] = useState<boolean>(false)
-    const ref = useRef(null)
+    const useref = useRef(null)
 
     const mutationFun = useMutation({
-        mutationFn: async (data: authProps) => {
-            return authServices.createAccount({
-                name: data.name,
+        mutationFn: async (data: loginProps) => {
+            return authServices.loginAccount({
                 email: data.email,
                 password: data.password
             });
@@ -48,36 +45,21 @@ export default function Sign_in() {
     })
 
     return (
-        <div className='w-full h-[100vh] p-4  md:p-0  flex items-center justify-center 
-        bg-gradient-to-br  from-blue-200 via-white to-gray-200 '>
-            <div className="shadow-2xl p-4 rounded-xl bg-white">
+        <div className='w-full h-[100vh]  flex items-center justify-center bg-slate-200 '>
+            <div className="space-y-8 shadow-2xl p-4 rounded-xl bg-white">
                 <div className="text-center">
-                    <h2 className="mt-2 text-3xl font-extrabold text-gray-900">Create your account</h2>
-                    <p className="mt-2 text-sm text-gray-600">Join us and start your journey</p>
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Login your account</h2>
+                    <p className="mt-2 text-sm text-gray-600">Welcome Back</p>
                 </div>
-                <div className="mx-auto w-16 h-16 hover:bg-slate-100 rounded-full bg-primary/10 flex items-center
-                 justify-center cursor-pointer">
+                <div className="mx-auto w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">
                     <UserRound className="h-12 w-12 text-primary" />
                 </div>
-                {/* Form Start */}
-                <form onSubmit={handleSubmit((data) => mutationFun.mutate(data))} className="space-y-4">
-                    <div className='relative'>
-                        <Contact className="absolute left-3 top-1/2 transform -translate-y-[-37%] text-gray-400" size={20} />
-                        <Input<authProps>
-                            ref={ref}
-                            type="text"
-                            label="Full name"
-                            name='name'
-                            control={control}
-                            className="pl-10 focus:ring-primary rounded-lg shadow-md"
-                            placeholder="Full name"
-                        />
-                    </div>
 
+                <form onSubmit={handleSubmit((data) => mutationFun.mutate(data))} className="space-y-8">
                     <div className="relative">
                         <MailIcon className="absolute left-3 top-1/2 transform -translate-y-[-40%] text-gray-400" size={20} />
-                        <Input<authProps>
-                            ref={ref}
+                        <Input<loginProps>
+                            ref={useref}
                             type="email"
                             label="Email address"
                             control={control}
@@ -88,8 +70,8 @@ export default function Sign_in() {
                     </div>
                     <div className="relative">
                         <LockIcon className="absolute left-3 top-1/2 transform -translate-y-[-40%] text-gray-400" size={20} />
-                        <Input<authProps>
-                            ref={ref}
+                        <Input<loginProps>
+                            ref={useref}
                             type={showPassword ? 'text' : 'password'}
                             label="Password"
                             name='password'
@@ -118,15 +100,14 @@ export default function Sign_in() {
                                     <div className="w-3 h-3 bg-white rounded-full animate-bounce delay-200"></div>
                                 </div>
 
-                            ) : 'Signup'}
+                            ) : 'Login'}
                         </button>
-                        
                     </div>
                 </form>
 
                 <p className="text-center text-base py-4 text-gray-600">
-                    Already have an account?{' '}
-                    <Link to={"/Login"} className="font-medium text-blue-600 text-primary hover:text-primary/80 transition-colors">
+                    Don't have any account?{' '}
+                    <Link to={"/sign-in"} className="font-medium text-blue-600 text-primary hover:text-primary/80 transition-colors">
                         Login
                     </Link>
                 </p>

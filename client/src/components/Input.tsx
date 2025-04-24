@@ -1,26 +1,29 @@
 import { forwardRef, useId } from 'react'
 import React from 'react';
-import { Control, Controller } from 'react-hook-form';
-import { authProps } from '../pages/Sign_in';
+import { Control, Controller, FieldValues,Path } from 'react-hook-form';
+import { JSX } from 'react/jsx-runtime';
 
 
-interface inpuutProps {
-    type: string,
+interface inputProps<T extends FieldValues> {
+    type?: string,
     label: string,
     className?: string,
-    name: keyof authProps,
+    name: Path<T>,
     placeholder: string,
-    control: Control<authProps>
+    control: Control<T>
 }
 
-const Input = ({ type = 'text', label, placeholder, className, name, control, ...props }: inpuutProps, ref) => {
+const InputInner = <T extends FieldValues>(
+    { type = 'text', label, placeholder, className, name, control, ...props } : inputProps<T>,
+    ref: React.Ref<HTMLInputElement>
+    ) => {
     const id = useId();
     return (
         <Controller
             name={name}
             control={control}
             rules={{
-                required: `${name} is required`,
+                required: `${name as string} is required`,
                 ...(name === 'email' ? { pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email" } } : {}),
                 ...(name === 'password' ? { minLength: { value: 4, message: "Password must be at least 8 characters" } } : {})
             }}
@@ -46,4 +49,9 @@ const Input = ({ type = 'text', label, placeholder, className, name, control, ..
     )
 }
 
-export default forwardRef(Input)
+
+const Input = forwardRef(InputInner) as <T extends FieldValues>(
+    props: inputProps<T> & {ref :React.Ref<HTMLInputElement>}
+) => JSX.Element 
+
+export default Input
