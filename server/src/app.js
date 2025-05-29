@@ -1,14 +1,10 @@
 import express from 'express'
 import cors from 'cors'
-import admin from 'firebase-admin'
-import serviceAccount from '../firebase-admin-sdk.json' assert { type: "json" };
+// import admin from 'firebase-admin'
+// import serviceAccount from '../firebase-admin-sdk.json' assert { type: "json" };
 
 
 const app = express()
-admin.initializeApp({
-    credential : admin.credential.cert(serviceAccount)
-
-})
 
 app.use(cors({
     origin:"*"

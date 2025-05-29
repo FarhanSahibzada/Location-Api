@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Contact, EyeIcon, EyeOffIcon, LockIcon, MailIcon, UserRound } from 'lucide-react'
 import Input from '../components/Input'
@@ -19,6 +19,7 @@ export interface authProps {
 // }
 
 export default function Sign_in() {
+
     const { control, handleSubmit } = useForm<authProps>({
         defaultValues: {
             name: '',
@@ -26,6 +27,7 @@ export default function Sign_in() {
             password: ''
         }
     })
+
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setloading] = useState<boolean>(false)
     const ref = useRef(null)

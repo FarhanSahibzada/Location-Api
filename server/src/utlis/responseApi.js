@@ -1,3 +1,5 @@
+
+
 class responseApi {
     constructor (statusCode , data , message='success'){
         this.statusCode = statusCode

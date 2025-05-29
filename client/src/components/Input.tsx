@@ -1,6 +1,5 @@
 import { forwardRef, useId } from 'react'
-import React from 'react';
-import { Control, Controller, FieldValues,Path } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { JSX } from 'react/jsx-runtime';
 
 
@@ -14,9 +13,9 @@ interface inputProps<T extends FieldValues> {
 }
 
 const InputInner = <T extends FieldValues>(
-    { type = 'text', label, placeholder, className, name, control, ...props } : inputProps<T>,
+    { type = 'text', label, placeholder, className, name, control, ...props }: inputProps<T>,
     ref: React.Ref<HTMLInputElement>
-    ) => {
+) => {
     const id = useId();
     return (
         <Controller
@@ -33,14 +32,14 @@ const InputInner = <T extends FieldValues>(
                         {label}
                     </label>
                     }
-                    <input className={`px-3 py-1.5 ${className} rounded-lg bg-white text-black outline-none focus:bg-gray-100
-                    duration-200 border border-gray-200 w-full `}
+                    <input
                         {...props}
                         {...field}
-                        ref={ref}
                         id={id}
                         type={type}
                         placeholder={placeholder}
+                        className={`px-3 py-1.5 ${className} rounded-lg bg-white text-black outline-none focus:bg-gray-100
+                    duration-200 border border-gray-200 w-full `}
                     />
                     {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
                 </div>
@@ -51,7 +50,7 @@ const InputInner = <T extends FieldValues>(
 
 
 const Input = forwardRef(InputInner) as <T extends FieldValues>(
-    props: inputProps<T> & {ref :React.Ref<HTMLInputElement>}
-) => JSX.Element 
+    props: inputProps<T> & { ref: React.Ref<HTMLInputElement> }
+) => JSX.Element
 
 export default Input
