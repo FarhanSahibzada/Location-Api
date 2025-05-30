@@ -6,6 +6,8 @@ import { data, Link } from 'react-router-dom'
 import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import authServices from '../firebase/authFun'
+import { useDispatch } from 'react-redux'
+import { login } from '../Store/AuthSlice'
 
 export interface authProps {
     name: string,
@@ -31,6 +33,7 @@ export default function Sign_in() {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setloading] = useState<boolean>(false)
     const ref = useRef(null)
+    const dispatch = useDispatch();
 
     const mutationFun = useMutation({
         mutationFn: async (data: authProps) => {
@@ -42,6 +45,7 @@ export default function Sign_in() {
         },
         onSuccess: (data) => {
             console.log("success", data)
+            dispatch(login(data))
         },
         onError: (error) => {
             console.log("Error when send the request", error)
@@ -122,7 +126,7 @@ export default function Sign_in() {
 
                             ) : 'Signup'}
                         </button>
-                        
+
                     </div>
                 </form>
 

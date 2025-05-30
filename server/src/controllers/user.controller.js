@@ -33,14 +33,35 @@ const register =  asyncHandler(async (req , res)=>{
       if (!createdbyuser) {
         throw new ApiError(500, "something went while registering the user");
     }
-    
+
+    const userData = await User.findById(createUser._id);
+
     return res.status(200).json(
-        new responseApi(200 , "user is successfull created" )
+        new responseApi(200 , userData ,"user is successfull created" )
     )
 
 })
 
+const login =  asyncHandler(async ()=>{
+
+    const {email}  = req.body;
+
+    if(!email) {
+        throw new ApiError(401 , "can not the email");
+    }
+
+    const finduser = await User.findOne({email});
+    if(!finduser){
+        throw new ApiError(404 , "can not find the user ");
+    }
+
+    return res.status(200).json(
+        new responseApi(200 , finduser , "user is successfully finded")
+    )
+
+})
 
 export {
-    register
+    register,
+    login
 }

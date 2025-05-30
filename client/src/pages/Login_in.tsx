@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import  { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Contact, EyeIcon, EyeOffIcon, LockIcon, MailIcon, UserRound } from 'lucide-react'
 import Input from '../components/Input'
@@ -6,16 +6,14 @@ import { data, Link } from 'react-router-dom'
 import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import authServices from '../firebase/authFun'
+import { useDispatch } from 'react-redux'
+import { login } from '../Store/AuthSlice'
 
 export interface loginProps {
     email: string,
     password: string,
 }
 
-// const registerData = async (data: authProps) => {
-//     const response = await axios.post(`${import.meta?.env.VITE_BACKEND_URL}/register`, data);
-//     return response.data;
-// }
 
 export default function Login_in() {
     const { control, handleSubmit } = useForm<loginProps>({
@@ -27,6 +25,7 @@ export default function Login_in() {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setloading] = useState<boolean>(false)
     const useref = useRef(null)
+    const dispatch = useDispatch();
 
     const mutationFun = useMutation({
         mutationFn: async (data: loginProps) => {
@@ -36,7 +35,8 @@ export default function Login_in() {
             });
         },
         onSuccess: (data) => {
-            console.log("success", data)
+            console.log("success", data);
+            dispatch(login(data));
         },
         onError: (error) => {
             console.log("Error when send the request", error)
@@ -46,7 +46,7 @@ export default function Login_in() {
 
     return (
         <div className='w-full h-[100vh]  flex items-center justify-center bg-slate-200 '>
-            <div className="space-y-8 shadow-2xl p-4 rounded-xl bg-white">
+            <div className=" shadow-2xl p-4 rounded-xl bg-white">
                 <div className="text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Login your account</h2>
                     <p className="mt-2 text-sm text-gray-600">Welcome Back</p>
@@ -108,7 +108,7 @@ export default function Login_in() {
                 <p className="text-center text-base py-4 text-gray-600">
                     Don't have any account?{' '}
                     <Link to={"/sign-in"} className="font-medium text-blue-600 text-primary hover:text-primary/80 transition-colors">
-                        Login
+                        Sign-Up
                     </Link>
                 </p>
             </div>

@@ -1,9 +1,8 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./firebase.config";
-import axios, { AxiosError } from "axios";
-import { useDispatch } from 'react-redux'
-import { login } from "../Store/AuthSlice";
+import axios from "axios";
 import { FirebaseError } from "firebase/app";
+import { AxiosError } from "axios";
 
 export class AuthService {
     private auth;
@@ -15,7 +14,21 @@ export class AuthService {
         try {
             const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
             const user = userCredential.user;
-            if (user) {
+
+            if(!user){
+                console.error("error user is not register");
+                return false
+            }
+
+            user.getIdToken()
+            .then((token)=>{
+                console.log("get the token : ", token);
+             localStorage.setItem("accessToken", token)
+            })
+            .catch((err)=>{
+                console.log("error when saving the token",err);
+            })
+           
                 const data = {
                     name: name,
                     email: email,
@@ -25,7 +38,7 @@ export class AuthService {
                 if (response && response.data) {
                     return response.data.data;
                 }
-            }
+            
 
         } catch (error: unknown) {
             const err = error as FirebaseError || AxiosError;
@@ -37,7 +50,26 @@ export class AuthService {
         try {
             const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
             const user = userCredential.user;
-            return user;
+            
+            if(!user){
+                console.error("error user is not register");
+                return false
+            }
+
+            user.getIdToken()
+            .then((token)=>{
+                console.log("get the token : ", token);
+             localStorage.setItem("accessToken", token)
+            })
+            .catch((err)=>{
+                console.log("error when saving the token",err);
+            })
+
+            const SearchUser= await axios.post(`${import.meta?.env.VITE_BACKEND_URL}/login`, {email : user.email });
+            if(SearchUser && SearchUser.data){
+                return SearchUser.data?.data;
+            }
+            
 
         } catch (error) {
             const err = error as FirebaseError || AxiosError;
@@ -54,7 +86,7 @@ export class AuthService {
             console.error("Error creating account:", err.code, err.message);
             return false
         }
-    }
+}
     async getCurrentUser() {
         return new Promise((resolve) => {
             onAuthStateChanged(this.auth, (user) => {
