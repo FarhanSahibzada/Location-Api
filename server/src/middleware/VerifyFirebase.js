@@ -1,6 +1,6 @@
 import { ApiError } from '../utlis/ErrorApi.js';
 import { responseApi } from '../utlis/responseApi.js';
-import { admin } from '../constant.js';
+import { admin } from '../utlis/firebaseAdmin.js';
 
 const VerifyToken = async (req, res, next) => {
     const token = req.headers.authorization?.spilit(" ")[1];

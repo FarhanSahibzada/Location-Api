@@ -20,21 +20,13 @@ export class AuthService {
                 return false
             }
 
-            user.getIdToken()
-            .then((token)=>{
-                console.log("get the token : ", token);
-             localStorage.setItem("accessToken", token)
-            })
-            .catch((err)=>{
-                console.log("error when saving the token",err);
-            })
-           
                 const data = {
                     name: name,
                     email: email,
                     firebaseUid: user.uid
                 }
-                const response = await axios.post(`${import.meta?.env.VITE_BACKEND_URL}/register`, data);
+               
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, data);
                 if (response && response.data) {
                     return response.data.data;
                 }
@@ -65,7 +57,7 @@ export class AuthService {
                 console.log("error when saving the token",err);
             })
 
-            const SearchUser= await axios.post(`${import.meta?.env.VITE_BACKEND_URL}/login`, {email : user.email });
+            const SearchUser= await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {email : user.email });
             if(SearchUser && SearchUser.data){
                 return SearchUser.data?.data;
             }
@@ -87,19 +79,7 @@ export class AuthService {
             return false
         }
 }
-    async getCurrentUser() {
-        return new Promise((resolve) => {
-            onAuthStateChanged(this.auth, (user) => {
-                if (user) {
-                    console.log("Current user:", user.uid);
-                    resolve(user.uid);
-                } else {
-                    console.log("No user is signed in.");
-                    resolve(null);
-                }
-            })
-        })
-    }
+   
 }
 const authServices = new AuthService()
 

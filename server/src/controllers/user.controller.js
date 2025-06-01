@@ -30,7 +30,7 @@ const register =  asyncHandler(async (req , res)=>{
         firebaseuid
     });
 
-      if (!createdbyuser) {
+      if (!createUser) {
         throw new ApiError(500, "something went while registering the user");
     }
 

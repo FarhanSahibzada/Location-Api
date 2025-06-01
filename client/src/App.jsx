@@ -6,36 +6,10 @@ import { login } from './Store/AuthSlice';
 
 function App() {
 
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
+   const [loading, setLoading] = useState(false)
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate()
 
-  const sendRequest = useCallback(async () => {
-    try {
-      const response = await AuthServices.getCurrentUser()
-      if (response) {
-        console.log("mila ha")
-      }
-    } catch (error) {
-      console.log("user not found", error)
-      navigate('/sign-in')
-    }
-  }, [navigate])
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      setLoading(true)
-      try {
-        await sendRequest()
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchUser()
-  }, [sendRequest])
 
 
   return !loading ? (
