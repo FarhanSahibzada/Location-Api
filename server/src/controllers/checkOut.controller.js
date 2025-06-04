@@ -2,16 +2,19 @@ import paytabs from 'paytabs_pt2';
 import { asyncHandler } from '../utlis/asynchandler.js';
 import { responseApi } from '../utlis/responseApi.js';
 
+
 let profileID = process.env.PAYTAB_PROFILE_ID,
     serverKey = process.env.PAYTAB_SERVER_KEY,
     region = "Pakistan";
-
 paytabs.setConfig(profileID, serverKey, region);
+
 
 const checkoutController = asyncHandler(async (req, res) => {
     const data = req.body;
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
+
+    console.log("request aye ", data);
     const paymentMethods = ['all'];
 
     let transaction = {
@@ -48,8 +51,10 @@ const checkoutController = asyncHandler(async (req, res) => {
         state: data.state,
         country: data.country,
         zip: data.zip,
-        IP: ip
+        IP: ip === '::1' ? '127.0.0.1' : ip
     };
+
+    console.log("current ip", customer.IP)
 
     let customerDetails = [
         customer.name,
@@ -79,7 +84,16 @@ const checkoutController = asyncHandler(async (req, res) => {
     let lang = "en";
     let frameMode = true;
 
-    paytabs .createPaymentPage(
+    const callbackMethod = (result)=>{
+        if(result['response_code'] === 400){
+            console.log("this is the result" , result['result']);            
+        }else{
+             console.log(result.redirect_url);
+        }
+
+    }
+
+    paytabs.createPaymentPage(
         paymentMethods,
         transactionDetails,
         cartDetails,
@@ -87,17 +101,11 @@ const checkoutController = asyncHandler(async (req, res) => {
         shippingDetails,
         response_URLs,
         lang,
-        frameMode,
-        (err, result) => {
-            if (err) {
-                console.error('❌ PayTabs error:', err);
-                return res.status(500).json(new responseApi(500 , "when doing a transcation created a error"));
-            }
-
-            console.log('✅ PayTabs result:', result);
-            return res.status(200).json(new responseApi(200 , {payment_url : result.redirect_url }));
-        }
+        callbackMethod,
+        frameMode
     );
+
+
 
 })
 
