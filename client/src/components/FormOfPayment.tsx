@@ -26,13 +26,16 @@ function FormOfPayment({ setIsDialogOpen }: FormOfPaymentProps) {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
     const mutationFn = useMutation({
-        mutationFn: async (data : FormData) => {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/checkout`, { data })
+        mutationFn: async (data: FormData) => {
+            console.log("backend url=",import.meta.env.VITE_BACKEND_URL)
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/checkout`, data,
+                { withCredentials: true }
+            )
             return response.data.data;
         },
         onSuccess: (response) => {
             setIsDialogOpen(false);
-            console.log("successful request", response);
+            window.location.href = response.url;
         },
         onError: (err) => {
             console.error("error when the payment method is requested", err);
