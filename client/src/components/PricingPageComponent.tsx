@@ -6,64 +6,11 @@ import './pricingButton.css'
 import { useState } from "react"
 import DialogBox from "./DialogBox"
 import FormOfPayment from "./FormOfPayment"
+import plans from '../lib/price_data.json'
 
 export default function PricingPageComponent() {
 
-  const plans = [
-    {
-      name: "Basic",
-      nameTitleColur: '#fabe7e',
-      price: "$0",
-      period: "forever",
-      description: "Perfect for testing and small projects",
-      requests: "100",
-      features: ["100 API requests/month", "Basic documentation", "Community support", "Standard rate limits"],
-      buttonText: "Get Started Free",
-      buttonVariant: "outline" as const,
-      popular: false,
-    },
-    {
-      name: "Premium",
-      nameTitleColur: '#b06af5',
-      price: "$5",
-      period: "per month",
-      description: "Great for growing applications",
-      requests: "500",
-      features: [
-        "500 API requests/month",
-        "Priority support",
-        "Advanced documentation",
-        "Higher rate limits",
-        "Usage analytics",
-      ],
-      buttonText: "Start Pro Plan",
-      buttonVariant: "default" as const,
-      icon: Rocket,
-      popular: true,
-    },
-    {
-      name: "Enterprise",
-      nameTitleColur: '#f46d69',
-      price: "$10",
-      period: "per month",
-      description: "For production applications",
-      requests: "1,000",
-      features: [
-        "1,000 API requests/month",
-        "24/7 priority support",
-        "Custom integrations",
-        "No rate limits",
-        "Advanced analytics",
-        "SLA guarantee",
-      ],
-      buttonText: "Go Business",
-      buttonVariant: "outline" as const,
-      icon: Star,
-      popular: false,
-    },
-  ]
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
-
 
   return (
     <>
@@ -104,8 +51,6 @@ export default function PricingPageComponent() {
           {/* Pricing Cards */}
           <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto px-6 md:px-0">
             {plans.map((plan, index) => {
-              const Icon = plan.icon
-
               return (
                 <Card
                   key={plan.name}

@@ -1,5 +1,5 @@
 import { asyncHandler } from '../utlis/asynchandler.js';
-import { paytabs } from '../utlis/payTabIntegration.js';
+import { paytabs } from '../config/payTabIntegration.js';
 import { responseApi } from '../utlis/responseApi.js';
 
 
