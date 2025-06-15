@@ -60,8 +60,8 @@ const checkoutController = asyncHandler(async (req, res) => {
     let shippingDetails = customerDetails;
 
     let url = {
-        response: 'https://webhook.site/c19f17d0-f59d-4b51-ad71-82b4cc14b250',
-        callback: 'https://webhook.site/c19f17d0-f59d-4b51-ad71-82b4cc14b250'
+        response: 'https://webhook.site/cf9eee9b-98df-4508-b08a-4ebea4b8c9b8',
+        callback: 'https://webhook.site/cf9eee9b-98df-4508-b08a-4ebea4b8c9b8'
     }
 
     let response_URLs = [

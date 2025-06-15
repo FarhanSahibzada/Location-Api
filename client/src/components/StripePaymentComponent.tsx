@@ -8,18 +8,22 @@ import {
 } from '@stripe/react-stripe-js';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import authServices from '../firebase/authFun';
 
 interface props {
   setIsDialogOpen : React.Dispatch<SetStateAction<boolean>>
 }
 
-export default function StripePaymentComponent({setIsDialogOpen } : props) {
+export default  function StripePaymentComponent({setIsDialogOpen } : props) {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState<string | null>(null);
   const [postalCode, setPostalCode] = useState('');
-  const access_token = localStorage.getItem('accessToken');
-
+  const [Token, setToken] = useState<string | null>(null)
+  const access_token =  authServices.getFreshToken()
+  .then((token)=>{
+   setToken(token)
+  });
 
   const cardElementOptions = {
     style: {
@@ -73,11 +77,11 @@ export default function StripePaymentComponent({setIsDialogOpen } : props) {
 
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/payment/stripe-checkout`,
-        data,
+        {data},
         {
           withCredentials: true,
           headers: {
-            Authorization: `Bearer ${access_token}`
+            Authorization: `Bearer ${Token}`
           }
         }
       );
@@ -133,7 +137,6 @@ export default function StripePaymentComponent({setIsDialogOpen } : props) {
         </div>
       </div>
 
-
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Postal Code
@@ -147,6 +150,7 @@ export default function StripePaymentComponent({setIsDialogOpen } : props) {
         />
       </div>
 
+
       {error && (
         <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
           {error}
@@ -158,7 +162,7 @@ export default function StripePaymentComponent({setIsDialogOpen } : props) {
         disabled={!stripe || mutationFn.isPending}
         className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {mutationFn.isPending ? "Processing..." : "Pay $20"}
+        {mutationFn.isPending ? "Processing..." : "Pay 20 SGD"}
       </button>
     </form>
   );

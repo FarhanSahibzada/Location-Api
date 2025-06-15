@@ -7,18 +7,19 @@ import { v4 as uuidv4 } from 'uuid';
 const stripe_checkout = asyncHandler(async (req, res) => {
     const { data } = req.body;
     const idempotencyKey = uuidv4();;
-
-    console.log("get the data", req.user)
+    
 
     if (
-        [data.product_name, data.amount, data.stripe_token].some((product) => product?.trim() == '')
+        typeof data.product_name !== 'string' || data.product_name.trim() === '' ||
+        typeof data.amount !== 'number' || isNaN(data.amount) ||
+        typeof data.stripe_token !== 'object' || !data.stripe_token.id
     ) {
-        throw new ApiError(400, "cannot get the data the data");
+        throw new ApiError(400, "Invalid or missing fields in payment data");
     }
 
     return Stripe.customers.create({
         email: req.email,
-        source: data.token
+        source: data.stripe_token.id
     }).then((customer) => {
         Stripe.charges.create({
             amount: data.amount * 100,

@@ -41,12 +41,18 @@ export default function PricingPageComponent() {
         description='Choose any one payment method'
       >
         <div className='w-full py-4 px-2'>
-          <div className='flex justify-center md:flex-row flex-col gap-4'>
+          <div className='flex items-center sm:justify-center sm:flex-row flex-col gap-x-0 gap-y-10 sm:gap-y-0 sm:gap-x-10 '>
             {CardData.map((item, index) => (
               <div
-                onClick={() => setSelectedMethod(item.name)}
+                onClick={() => {
+                  setSelectedMethod(item.name);
+                   setIsDialogOpen(false);
+                   setIsPaymentDialogOpen(true)
+                }
+                }
                 key={index}
-                className='p-4 w-[20rem] flex flex-col items-center border-2 border-neutral-300 hover:border-blue-400 cursor-pointer transition-all duration-200'
+                className='p-3 w-[15rem] flex flex-col items-center  border-2 border-neutral-300
+                 hover:border-blue-400 cursor-pointer transition-all duration-200 rounded-md'
               >
                 <div className="w-full h-24 flex items-center justify-center mb-3">
                   <img
@@ -63,12 +69,12 @@ export default function PricingPageComponent() {
       </DialogBox>
 
 
-      {SelectedMethod === 'Stripe' && (
+      {SelectedMethod === 'Stripe' && 
         <StripePaymentDialogBox
           isDialogOpen={isPaymentDialogOpen}
           setIsDialogOpen={setIsPaymentDialogOpen}
         />
-      )}
+      }
 
       {SelectedMethod === 'Paytabs' && (
         <PaytabsPaymentDialogBox
