@@ -7,26 +7,75 @@ import { useState } from "react"
 import DialogBox from "./DialogBox"
 import FormOfPayment from "./FormOfPayment"
 import plans from '../lib/price_data.json'
+import paytabLogo from '../../public/logo_paytabs.webp'
+import StripeLogo from '../../public/Stripe_Logo.png'
+import StripePaymentDialogBox from "./StripePaymentDialogBox"
+import PaytabsPaymentDialogBox from "./PaytabsPaymentDialogBox"
+
+interface props {
+  selectedMethod: string
+}
 
 export default function PricingPageComponent() {
 
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [SelectedMethod, setSelectedMethod] = useState<string>('')
+  const CardData = [
+    {
+      name: "Paytabs",
+      image: paytabLogo
+    },
+    {
+      name: "Stripe",
+      image: StripeLogo
+    },
+  ]
 
   return (
     <>
       <DialogBox
-        title="Customer Information"
-        description="Please fill the following Information"
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
-        children={
-          <>
-            <FormOfPayment setIsDialogOpen={setIsDialogOpen}/> 
-          </>
-        }
+        title='Payment Method'
+        description='Choose any one payment method'
+      >
+        <div className='w-full py-4 px-2'>
+          <div className='flex justify-center md:flex-row flex-col gap-4'>
+            {CardData.map((item, index) => (
+              <div
+                onClick={() => setSelectedMethod(item.name)}
+                key={index}
+                className='p-4 w-[20rem] flex flex-col items-center border-2 border-neutral-300 hover:border-blue-400 cursor-pointer transition-all duration-200'
+              >
+                <div className="w-full h-24 flex items-center justify-center mb-3">
+                  <img
+                    src={item.image}
+                    alt={`${item.name} logo`}
+                    className='max-w-full max-h-full object-contain'
+                  />
+                </div>
+                <h1 className="text-center font-medium">{item.name}</h1>
+              </div>
+            ))}
+          </div>
+        </div>
+      </DialogBox>
 
-/>
 
+      {SelectedMethod === 'Stripe' && (
+        <StripePaymentDialogBox
+          isDialogOpen={isPaymentDialogOpen}
+          setIsDialogOpen={setIsPaymentDialogOpen}
+        />
+      )}
+
+      {SelectedMethod === 'Paytabs' && (
+        <PaytabsPaymentDialogBox
+          isDialogOpen={isPaymentDialogOpen}
+          setIsDialogOpen={setIsPaymentDialogOpen}
+        />
+      )}
 
       <div className="w-full bg-gradient-to-br from-[#0e0c16] to-[#0d111e] py-12 px-4">
         <div className="max-w-7xl mx-auto">
@@ -77,8 +126,8 @@ export default function PricingPageComponent() {
 
                     <Button
                       // variant={plan.buttonVariant}
-                      onClick={()=>{
-                        if(plan.name.toLowerCase() == "basic") return 
+                      onClick={() => {
+                        if (plan.name.toLowerCase() == "basic") return
                         else {
                           setIsDialogOpen(true)
                         }
@@ -111,7 +160,7 @@ export default function PricingPageComponent() {
             })}
           </div>
 
-          {/* FAQ Section */}
+
           <div className="mt-20 text-center">
             <h2 className="text-3xl font-bold text-white mb-8">Frequently, Asked Questions</h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">

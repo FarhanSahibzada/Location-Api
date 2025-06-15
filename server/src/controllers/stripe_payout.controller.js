@@ -8,9 +8,10 @@ const stripe_checkout = asyncHandler(async (req, res) => {
     const { data } = req.body;
     const idempotencyKey = uuidv4();;
 
+    console.log("get the data", req.user)
 
     if (
-        [data.product_name, data.amount, data.token].some((product) => product?.trim() == '')
+        [data.product_name, data.amount, data.stripe_token].some((product) => product?.trim() == '')
     ) {
         throw new ApiError(400, "cannot get the data the data");
     }

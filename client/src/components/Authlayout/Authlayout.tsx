@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom"
 import { RootState } from "../../Store/store"
 import React from "react"
 
-export default function Authlayout({ children , authentication = true }) {
+interface auth_layput_props {
+    children : React.ReactNode,
+    authentication : Boolean
+}
+
+export default function Authlayout({ children , authentication = true }  : auth_layput_props) {
     const navigate = useNavigate()
     const [loader , setLoader] = useState(true)
     const authstatus = useSelector((state  :RootState ) => state.auth.status) 

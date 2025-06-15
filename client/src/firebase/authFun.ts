@@ -26,7 +26,7 @@ export class AuthService {
                     firebaseUid: user.uid
                 }
                
-                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, data);
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, data , {withCredentials : true});
                 if (response && response.data) {
                     return response.data.data;
                 }
@@ -57,7 +57,7 @@ export class AuthService {
                 console.log("error when saving the token",err);
             })
 
-            const SearchUser= await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {email : user.email });
+            const SearchUser= await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {email : user.email } , {withCredentials : true});
             if(SearchUser && SearchUser.data){
                 return SearchUser.data?.data;
             }
