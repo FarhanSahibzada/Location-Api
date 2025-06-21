@@ -5,10 +5,7 @@ import { Check, Zap, Rocket, Star } from "lucide-react"
 import './pricingButton.css'
 import { useState } from "react"
 import DialogBox from "./DialogBox"
-import FormOfPayment from "./FormOfPayment"
 import plans from '../lib/price_data.json'
-import paytabLogo from '../../public/logo_paytabs.webp'
-import StripeLogo from '../../public/Stripe_Logo.png'
 import StripePaymentDialogBox from "./StripePaymentDialogBox"
 import PaytabsPaymentDialogBox from "./PaytabsPaymentDialogBox"
 
@@ -24,12 +21,12 @@ export default function PricingPageComponent() {
   const CardData = [
     {
       name: "Paytabs",
-      image: paytabLogo
+      image: '/logo_paytabs.webp'
     },
     {
       name: "Stripe",
-      image: StripeLogo
-    },
+      image: '/Stripe_Logo.png' 
+       },
   ]
 
   return (
@@ -41,7 +38,8 @@ export default function PricingPageComponent() {
         description='Choose any one payment method'
       >
         <div className='w-full py-4 px-2'>
-          <div className='flex items-center sm:justify-center sm:flex-row flex-col gap-x-0 gap-y-10 sm:gap-y-0 sm:gap-x-10 '>
+          <div className='flex items-center sm:justify-center sm:flex-row flex-col gap-x-0 
+          gap-y-10 sm:gap-y-0 sm:gap-x-10 '>
             {CardData.map((item, index) => (
               <div
                 onClick={() => {

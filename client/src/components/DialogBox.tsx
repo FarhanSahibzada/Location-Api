@@ -17,7 +17,7 @@ interface dialogProps {
 export default function DialogBox({title , description, children , isDialogOpen , setIsDialogOpen} : dialogProps) {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
-            <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto  rounded-md">
                 <DialogHeader>
                     <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
                     <DialogDescription>

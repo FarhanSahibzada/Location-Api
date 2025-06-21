@@ -1,8 +1,8 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./firebase.config";
-import axios from "axios";
 import { FirebaseError } from "firebase/app";
 import { AxiosError } from "axios";
+import api from "../api/axios/index";
 
 export class AuthService {
     private auth;
@@ -26,7 +26,7 @@ export class AuthService {
                 firebaseUid: user.uid
             }
 
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, data, { withCredentials: true });
+            const response = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, data);
             if (response && response.data) {
                 return response.data.data;
             }
@@ -48,20 +48,10 @@ export class AuthService {
                 return false
             }
 
-            user.getIdToken()
-                .then((token) => {
-                    console.log("get the token : ", token);
-                    localStorage.setItem("accessToken", token)
-                })
-                .catch((err) => {
-                    console.log("error when saving the token", err);
-                })
-
-            const SearchUser = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, { email: user.email }, { withCredentials: true });
+            const SearchUser = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, { email: user.email });
             if (SearchUser && SearchUser.data) {
                 return SearchUser.data?.data;
             }
-
 
         } catch (error) {
             const err = error as FirebaseError || AxiosError;
@@ -72,6 +62,9 @@ export class AuthService {
     async logoutAccount() {
         try {
             const userCredential = await signOut(this.auth);
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('tokenExpiry');
+
             return true
         } catch (error) {
             const err = error as FirebaseError || AxiosError;
@@ -79,11 +72,23 @@ export class AuthService {
             return false
         }
     }
-    async getFreshToken() : Promise<string | null>{
+
+    async getFreshToken(): Promise<string | null> {
+        const cachedToken = localStorage.getItem("accessToken");
+        const expiry = localStorage.getItem("tokenExpiry");
+        if (cachedToken && expiry && Date.now() < Number(expiry)) {
+            return cachedToken;
+        }
+
+
         const user = this.auth.currentUser;
         if (user) {
             try {
                 const token = await user.getIdToken(true);
+                const expiresIn = 60 * 60 * 1000;
+                console.log(token)
+                localStorage.setItem("accessToken", token);
+                localStorage.setItem("tokenExpiry", `${Date.now() + expiresIn}`);
                 return token;
             } catch (err) {
                 console.error("Error getting fresh token:", err);
@@ -95,8 +100,8 @@ export class AuthService {
         }
     }
 
-
 }
+
 const authServices = new AuthService()
 
 export default authServices;

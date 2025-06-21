@@ -9,6 +9,7 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import authServices from '../firebase/authFun';
+import api from '../api/axios/index';
 
 interface props {
   setIsDialogOpen : React.Dispatch<SetStateAction<boolean>>
@@ -75,15 +76,9 @@ export default  function StripePaymentComponent({setIsDialogOpen } : props) {
         stripe_token: token
       };
 
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BACKEND_URL}/payment/stripe-checkout`,
         {data},
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${Token}`
-          }
-        }
       );
 
       return response.data;

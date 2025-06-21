@@ -4,7 +4,7 @@ import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { SetStateAction } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '../api/axios/index';
 
 export interface FormData {
     name: string;
@@ -28,9 +28,8 @@ function FormOfPayment({ setIsDialogOpen }: FormOfPaymentProps) {
     const mutationFn = useMutation({
         mutationFn: async (data: FormData) => {
             console.log("backend url=",import.meta.env.VITE_BACKEND_URL)
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/checkout`, data,
-                { withCredentials: true }
-            )
+            const response = await api.post(`${import.meta.env.VITE_BACKEND_URL}/payment/checkout`, data,    
+        )
             return response.data.data;
         },
         onSuccess: (response) => {

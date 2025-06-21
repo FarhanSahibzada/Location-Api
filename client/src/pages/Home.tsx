@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import StripePaymentComponent from '../components/StripePaymentComponent'
+import authServices from '../firebase/authFun'
+
+
 
 export default function Home() {
+
     return (
         <div className='bg-black/[0.88] p-2  '>
             <div className='flex justify-end  space-x-2 me-2 mt-2'>
