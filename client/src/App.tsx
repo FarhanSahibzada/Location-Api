@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Outlet, useNavigate } from 'react-router-dom';
-import AuthServices from './firebase/authFun';
-import { login } from './Store/AuthSlice';
+import { useState } from 'react'
+import { Outlet } from 'react-router-dom';
+import Navber from './components/layout/Navber';
 
 function App() {
 
@@ -15,6 +13,7 @@ function App() {
   return !loading ? (
     <div className='w-full h-full
     '>
+      <Navber/>
       <Outlet />
     </div>
   ) : (
