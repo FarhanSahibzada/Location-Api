@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom';
 import Navber from './components/layout/Navber';
+import Footer from './components/layout/Footer';
+import ScrollToHash from './Hooks/ScroolToHash';
 
 function App() {
 
@@ -14,7 +16,9 @@ function App() {
     <div className='w-full h-full
     '>
       <Navber/>
+      <ScrollToHash/>
       <Outlet />
+      <Footer/>
     </div>
   ) : (
     <div className="flex flex-col items-center justify-center min-h-screen 

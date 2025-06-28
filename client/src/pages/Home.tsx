@@ -8,7 +8,7 @@ import authServices from '../firebase/authFun'
 export default function Home() {
 
     return (
-        <div className='bg-black/[0.88] p-2  '>
+        <section id='#' className='bg-black/[0.88] p-2  '>
             {/* <div className='flex justify-end  space-x-2 me-2 mt-2'>
                 <Link to={'/pricig-pnage'}>
                     <button className='text-white font-bold bg-blue-500 rounded-lg px-2 py-1.5'>Pricing</button>
@@ -35,6 +35,6 @@ export default function Home() {
                      zone, and landmark — via a simple API.</p>
                         </div>
             </div>
-        </div>
+        </section>
     )
 }
