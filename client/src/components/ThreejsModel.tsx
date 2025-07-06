@@ -14,14 +14,16 @@ export default function Threejsmodel() {
     //intialze webgl
     const renderer = new three.WebGLRenderer({
       canvas: canvas_ref.current,
-      antialias: true
+      antialias: true,
+      alpha: true
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const width = canvas_ref.current.clientWidth;
+    const height = canvas_ref.current.clientHeight;
+    renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     //intialze scene 
     const scene = new three.Scene();
-    scene.background = new three.Color('black');
 
     const ambientLight = new three.AmbientLight(0xffffff, 5);
     const pointLight = new three.PointLight(0xffffff, 10);
@@ -37,8 +39,8 @@ export default function Threejsmodel() {
 
     loader.load('/src/texture/threejs_model/perseverance_-_nasa_mars_landing_2021.glb', (gltf) => {
       const model = gltf.scene;
-      model.scale.set(2, 2, 2);
-      model.position.set(0,0, 0);
+      model.scale.set(1.8, 1.8, 1.8);
+      model.position.set(0, -2, 0);
       scene.add(model);
     });
 
@@ -51,22 +53,27 @@ export default function Threejsmodel() {
 
     // camera
     const camera = new three.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 400);
-    camera.position.set(5, 10, 5);
+    camera.position.set(12, 10, 5);
 
 
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = true;
-    controls.minDistance = 20;
-    controls.maxDistance = 200;
+    controls.enableZoom = false;
 
 
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    const resizeRenderer = () => {
+      console.log(canvas_ref.current?.parentElement?.clientWidth)
+      const width = canvas_ref.current?.parentElement?.clientWidth || window.innerWidth;
+      const height = canvas_ref.current?.parentElement?.clientHeight || window.innerHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    })
+    };
+
+    resizeRenderer();
+    window.addEventListener('resize', resizeRenderer);
 
     //clock three js
     // const clock = new three.Clock();
@@ -90,9 +97,11 @@ export default function Threejsmodel() {
   }, [])
 
   return (
-    <canvas ref={canvas_ref}>
+    <canvas
+      ref={canvas_ref}
+      style={{ width: '100%', height: '100%', display: 'block' }}
+    />
 
-    </canvas>
   )
 }
 
