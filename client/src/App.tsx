@@ -13,7 +13,7 @@ function App() {
 
 
   return !loading ? (
-    <div className='w-full h-full
+    <div className='w-full h-full overflow-hidden
     '>
       <Navber/>
       <ScrollToHash/>
