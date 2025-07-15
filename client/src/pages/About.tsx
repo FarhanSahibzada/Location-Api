@@ -2,19 +2,22 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative h-[90vh] md:h-screen bg-[url('/man1.png')] bg-cover bg-center bg-no-repeat mt-10 bg-white"
+      className="relative h-[90vh] md:h-screen lg:bg-[url('/man1.png')] bg-cover bg-center bg-no-repeat mt-10 bg-white"
     >
       <div className="absolute inset-0 bg-white/40  md:hidden z-0" />
 
-      <div className="relative">
+      <div className="relative w-full flex flex-col items-center">
         <h1 className="
        text-4xl sm:text-6xl md:text-8xl  xl:text-9xl font-montserrat 
       font-semibold mix-blend-difference text-white p-4 text-center tracking-widest"
         >
           F.SAHIBZADA
         </h1>
-        <p className="text-center text-lg text-black md:text-neutral-700 font-semibold md:-mt-5">
-          Our mission is to make city coordinates accessible, accurate, and easy to integrate for developers around the world.
+        <p className="text-lg  text-black md:text-black  font-semibold md:-mt-2
+        font-montserrat  text-center max-w-[500px]  
+        ">
+          Our mission is to make city coordinates accessible, accurate,
+           and easy to integrate for developers around the world.
         </p>
 
         {/* two cards on long screens */}
@@ -48,20 +51,21 @@ export default function About() {
 
         {/* two cards  on short screens  */}
         <div className="lg:hidden flex flex-col items-center justify-center gap-8 px-4 mt-20">
-          <div className="max-w-96 text-center text-black bg-white/70 p-6 rounded-xl shadow-md">
-            <h1 className="font-montserrat font-semibold text-2xl tracking-wide mb-2">
+
+          <div className="max-w-96 sm:max-w-[500px] text-center text-black p-4 sm:p-16  rounded-xl shadow-md">
+            <h1 className="font-montserrat font-semibold sm:font-bold text-2xl sm:text-4xl tracking-wide mb-2">
               Empowering Location Data
             </h1>
-            <p className="font-normal text-sm text-neutral-700 leading-5">
+            <p className="font-normal sm:font-semibold text-sm sm:text-lg text-neutral-700 leading-5">
               Farhan provides powerful and reliable location APIs that connect you to precise geographic data worldwide.
             </p>
           </div>
 
-          <div className="max-w-96 text-center text-black bg-white/70 p-4 rounded-xl shadow-md">
-            <h1 className="font-montserrat font-semibold text-2xl tracking-wide mb-2">
+          <div className="max-w-96 sm:max-w-[500px] text-center text-black p-4 sm:p-16  rounded-xl shadow-md">
+            <h1 className="font-montserrat font-semibold sm:font-bold text-2xl sm:text-4xl tracking-wide mb-2">
               Simplifying Geolocation
             </h1>
-            <p className="font-normal text-sm text-neutral-700 leading-5">
+            <p className="font-normal sm:font-semibold text-sm sm:text-lg text-neutral-700 leading-5">
               With easy-to-use endpoints and accurate data,
               Farhan helps developers build location-aware applications effortlessly.
             </p>
