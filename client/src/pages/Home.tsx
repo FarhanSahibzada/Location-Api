@@ -14,6 +14,7 @@ export default function Home() {
                     <button className='text-white font-bold bg-blue-500 rounded-lg px-2 py-1.5'>Login</button>
                 </Link>
             </div> */}
+            
             <div className='flex flex-col md:mt-0 md:flex-row items-center justify-center sm:justify-start 
             min-h-screen space-y-2 px-2 md:px-8 lg:gap-x-10 md:pr-4 mt-20'>
 

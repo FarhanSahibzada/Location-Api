@@ -18,6 +18,7 @@ export default {
   		colors: {},
        fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
+        baby_bear :['Baby Bear', 'sans-serif'],
       },
   	}
   },
