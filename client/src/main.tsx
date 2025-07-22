@@ -16,7 +16,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHIBLE_KEY);
 const queryclient = new QueryClient();
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <StrictMode>
     <Provider store={Store}>
       <QueryClientProvider client={queryclient}>
         <Elements stripe={stripePromise}>
@@ -26,5 +25,4 @@ createRoot(document.getElementById('root') as HTMLElement).render(
         </Elements>
       </QueryClientProvider>
     </Provider>
-  </StrictMode>,
 )

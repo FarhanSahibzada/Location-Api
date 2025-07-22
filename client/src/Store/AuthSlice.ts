@@ -1,19 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
-
 interface props {
     status: boolean,
     userData: {
         name: string,
         _id: string,
         email: string
-    } | null
+    } | null,
+    loading : {
+        Loading : boolean,
+    }
 }
 
 const initialState: props = {
     status: false,
     userData: null,
+    loading  : {
+        Loading  : false,
+    }
 
 }
 
@@ -29,10 +33,13 @@ const authslice = createSlice({
             state.status = false;
             state.userData = null;
         },
+        set_loading  :(state,action : PayloadAction<props["loading"]>)=>{
+            state.loading.Loading   = action.payload.Loading
+        }
     }
 })
 
 
-export const { login, logout } = authslice.actions;
+export const { login, logout , set_loading } = authslice.actions;
 
 export default authslice.reducer;
