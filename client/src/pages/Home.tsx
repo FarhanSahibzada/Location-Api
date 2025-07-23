@@ -1,6 +1,7 @@
 import { useProgress } from '@react-three/drei'
 import Threejsmodel from '../components/ThreejsModel'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 export default function Home() {
@@ -8,14 +9,19 @@ export default function Home() {
  
         return (
             <section id='#' className='bg-black/[0.88] p-2  '>
-                {/* <div className='flex justify-end  space-x-2 me-2 mt-2'>
-                <Link to={'/pricig-pnage'}>
-                    <button className='text-white font-bold bg-blue-500 rounded-lg px-2 py-1.5'>Pricing</button>
+                <div className='space-x-2 me-2 mt-2 hidden  xl:flex xl:justify-end'>
+                <Link to={'/sign-up'}>
+                    <button className='font-montserrat font-semibold bg-transparent  border-2 border-slate-200 text-slate-200
+                     px-4 py-2 rounded-full hover:bg-slate-100 hover:border-transparent hover:text-black duration-200 
+                    '>Create Free Account</button>
                 </Link>
                 <Link to={'/login'} >
-                    <button className='text-white font-bold bg-blue-500 rounded-lg px-2 py-1.5'>Login</button>
+                    <button className='font-montserrat px-4 py-2  font-semibold  rounded-full bg-slate-100 border-transparent text-black duration-200
+                     hover:bg-transparent  border-2 hover:border-slate-200 hover:text-slate-200 
+                    
+                    '>Login</button>
                 </Link>
-            </div> */}
+            </div>
 
                 <div className='flex flex-col md:mt-0 md:flex-row items-center justify-center sm:justify-start 
             min-h-screen space-y-2 px-2 md:px-8 lg:gap-x-10 md:pr-4 mt-20'>

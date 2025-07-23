@@ -34,7 +34,7 @@ export default function ContactUsPage() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [isSubmitted , setIsSubmitted] = useState<boolean>(false)
-  const { register, control, handleSubmit , formState : {isSubmitting}} = useForm<contact_props>();
+  const {  control, handleSubmit , formState : {isSubmitting}} = useForm<contact_props>();
 
   const mutationFn = useMutation({
     mutationFn : async (data : contact_props)=>{
@@ -53,7 +53,7 @@ export default function ContactUsPage() {
   })
 
   return (
-    <section id="#get_in_touch" className="container mx-auto px-4 relative mt-14 mb-10" ref={ref}>
+    <section id="get_in_touch" className="container mx-auto px-4 relative mt-14 mb-10" ref={ref}>
 
       <motion.div
         variants={containerVariants}

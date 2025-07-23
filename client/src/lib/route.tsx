@@ -8,6 +8,7 @@ import {
   PricingPage
 } from '../pages/index';
 import MainHomePage from '../pages/MainHomePage';
+import Profile from '../pages/Profile';
 
 
 const router = createBrowserRouter([
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/sign-in',
+        path: '/sign-up',
         element: (
           <Authlayout authentication={false}>
             <Sign_in />
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
           </Authlayout>
         ),
       },
+      {
+        path: "/profile",
+        element : (
+          <Authlayout authentication={true}>
+            <Profile />
+          </Authlayout>
+        )
+      }
     ],
   },
 ]);

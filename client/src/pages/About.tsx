@@ -1,7 +1,7 @@
 export default function About() {
   return (
     <section
-      id="#about"
+      id="about"
       className="relative h-[90vh] md:h-screen lg:bg-[url('/man1.png')] bg-cover bg-center bg-no-repeat my-10 bg-white/40"
     >
       <div className="absolute inset-0 bg-white/40  md:hidden z-0" />

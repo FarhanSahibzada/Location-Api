@@ -45,7 +45,7 @@ export default function CardPage() {
     ];
 
     return (
-        <section id='#card_section' className='w-full h-[90vh] my-14' ref={section_ref}>
+        <section id='card_section' className='w-full h-[90vh] my-14' ref={section_ref}>
             <motion.div
                 variants={item_varients}
                 initial="hidden"
