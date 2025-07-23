@@ -1,6 +1,5 @@
 import authServices from '../../firebase/authFun';
 import axios from 'axios'
-import { useState } from 'react';
 
 const base_url = import.meta.env.VITE_BACKEND_URL;
 

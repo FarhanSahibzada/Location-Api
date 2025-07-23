@@ -14,7 +14,7 @@ interface inputProps<T extends FieldValues> {
 
 const InputInner = <T extends FieldValues>(
     { type = 'text', label, placeholder, className, name, control, ...props }: inputProps<T>,
-    ref: React.Ref<HTMLInputElement>
+    ref?: React.Ref<HTMLInputElement>
 ) => {
     const id = useId();
     return (
@@ -23,8 +23,8 @@ const InputInner = <T extends FieldValues>(
             control={control}
             rules={{
                 required: `${name as string} is required`,
-                ...(name === 'email' ? { pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email" } } : {}),
-                ...(name === 'password' ? { minLength: { value: 4, message: "Password must be at least 8 characters" } } : {})
+                ...(name.toLowerCase() === 'email' ? { pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email" } } : {}),
+                ...(name.toLowerCase() === 'password' ? { minLength: { value: 4, message: "Password must be at least 8 characters" } } : {})
             }}
             render={({ field, fieldState: { error } }) => (
                 <div className={`w-full `} >
@@ -50,7 +50,7 @@ const InputInner = <T extends FieldValues>(
 
 
 const Input = forwardRef(InputInner) as <T extends FieldValues>(
-    props: inputProps<T> & { ref: React.Ref<HTMLInputElement> }
+    props: inputProps<T> & { ref?: React.Ref<HTMLInputElement> }
 ) => JSX.Element
 
 export default Input
