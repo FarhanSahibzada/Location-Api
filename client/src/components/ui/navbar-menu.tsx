@@ -172,12 +172,12 @@ export const Menu_icon = (
 
       export const HoveredLink = ({children, ...rest }: any) => {
   return (
-      <div
+      <a
         {...rest}
-        className="w-full flex justify-start px-3 py-1 rounded-full
+        className="w-full flex justify-start px-3 py-1 rounded-full cursor-pointer
          text-neutral-700 hover:bg-slate-200 dark:text-neutral-200 hover:text-black"
       >
         {children}
-      </div>
+      </a>
       );
 };

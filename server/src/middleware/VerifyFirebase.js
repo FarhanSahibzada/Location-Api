@@ -2,7 +2,7 @@ import { ApiError } from '../utlis/ErrorApi.js';
 import { admin } from '../utlis/firebaseAdmin.js';
 
 const VerifyToken = async (req, res, next) => {
-    const token = req.header("Authorization")?.replace("Bearer ", "")
+    const token = await  req.cookies?.access_token ||  req.header("Authorization")?.replace("Bearer ", "")
 
     if (!token) {
         throw new ApiError(403, "can not get the token");
@@ -13,7 +13,7 @@ const VerifyToken = async (req, res, next) => {
         if (!decodedToken) {
             throw new ApiError(403, "token is not decoded");
         }
-
+ 
         req.user = decodedToken;
         next();
     } catch (error) {

@@ -15,10 +15,27 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    firebaseUid: {
+    firebase_uid: {
         type: String,
         requied: true
+    },
+    ip_address: {
+        type: Number,
+        required: true,
+        unique: true
+    },
+    coords: {
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true }
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    country: {
+        type: String,
+        requied: true,
     }
-})
+}, { timestamps: true })
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
