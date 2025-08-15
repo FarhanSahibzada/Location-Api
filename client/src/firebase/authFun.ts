@@ -48,7 +48,7 @@ export class AuthService {
                 return false
             }
 
-            const SearchUser = await api.post(`/user/login`, { email: user.email });
+            const SearchUser = await api.post(`/user/login`, { email: user.email});
             if (SearchUser && SearchUser.data) {
                 return SearchUser.data?.data;
             }
@@ -56,7 +56,7 @@ export class AuthService {
         } catch (error) {
             const err = error as FirebaseError || AxiosError;
             console.error("Error creating account:", err.code, err.message);
-            return false
+            throw err;
         }
     }
     async logoutAccount() {

@@ -3,11 +3,13 @@ import { HoveredLink, Menu, Menu_icon, MenuItem, } from "../ui/navbar-menu";
 import { cn } from "../../lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { Menu as Menuitem } from 'lucide-react'
+import { useSelector } from "react-redux";
+import { RootState } from "@/Store/store";
 
 
 function Navber() {
-  const [active, setActive] = useState<string | null>('Home');
-  
+  const [active, setActive] = useState<string | null>('');
+  const user_login = useSelector((state: RootState) => state.auth.status)
 
   return (
     <div
@@ -16,12 +18,10 @@ function Navber() {
       <Menu setActive={setActive} >
         <MenuItem setActive={setActive} active={active} item={"Home"} >
           <div className="flex flex-col space-y-4 text-sm">
-              <Link to={'/'}>
-                <HoveredLink >Home</HoveredLink>
-              </Link>
-            <HoveredLink href="#about">About Us</HoveredLink>
-            <HoveredLink href="#card_section">Available Apis</HoveredLink>
-            <HoveredLink href="#get_in_touch">Get Us Touch</HoveredLink>
+            <HoveredLink to={'/'}>Home</HoveredLink>
+            <HoveredLink to="#about">About Us</HoveredLink>
+            <HoveredLink to="#card_section">Available Apis</HoveredLink>
+            <HoveredLink to="#get_in_touch">Get Us Touch</HoveredLink>
           </div>
         </MenuItem>
 
@@ -34,12 +34,16 @@ function Navber() {
           </MenuItem>
         </Link>
 
-        <Menu_icon setActive={setActive} active={active} item={<Menuitem></Menuitem>} name="Hamburger">
-          <div className="flex flex-col space-y-2">
-            <Link to={'/sign-up'}>  <HoveredLink>Sign Up</HoveredLink></Link>
-            <Link to={'/Login'}><HoveredLink>Login</HoveredLink> </Link>
+        {!user_login ? (
+          <div className="block xl:hidden">
+            <Menu_icon setActive={setActive} active={active} item={<Menuitem></Menuitem>} name="Hamburger">
+              <div className="flex flex-col space-y-2">
+                <HoveredLink to={'/sign-up'}>Sign Up</HoveredLink>
+                <HoveredLink to={'/Login'}>Login</HoveredLink>
+              </div>
+            </Menu_icon>
           </div>
-        </Menu_icon>
+        ) : null}
       </Menu>
 
     </div>

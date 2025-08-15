@@ -5,6 +5,9 @@ import CardPage from './CardPage'
 import ContactUsPage from './ContactUsPage'
 
 export default function MainHomePage() {
+
+// applying the current user api and hiiting from here   
+
   return (
     <>
     <Home/>

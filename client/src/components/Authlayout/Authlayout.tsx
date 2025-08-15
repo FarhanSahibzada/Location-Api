@@ -13,7 +13,7 @@ export default function Authlayout({ children , authentication = true }  : auth_
     const navigate = useNavigate()
     const [loader , setLoader] = useState(true)
     const authstatus = useSelector((state  :RootState ) => state.auth.status) 
-    
+
     useEffect(() => { 
         if(authentication && authstatus !== authentication) { 
             navigate('/login')

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion  , Transition} from "framer-motion";
+import { Link } from "react-router-dom";
 
 const transition :Transition = {
   type: "spring",
@@ -170,14 +171,14 @@ export const Menu_icon = (
       );
 };
 
-      export const HoveredLink = ({children, ...rest }: any) => {
+      export const HoveredLink = ({to,children, ...rest }: any) => {
   return (
-      <a
+      <Link to={to}
         {...rest}
         className="w-full flex justify-start px-3 py-1 rounded-full cursor-pointer
          text-neutral-700 hover:bg-slate-200 dark:text-neutral-200 hover:text-black"
       >
         {children}
-      </a>
+      </Link>
       );
 };
