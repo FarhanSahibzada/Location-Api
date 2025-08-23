@@ -6,28 +6,29 @@ import Loading from './components/Loading';
 import { useEffect, useState } from 'react';
 import { useProgress } from '@react-three/drei';
 import Threejsmodel from './components/ThreejsModel';
+import { useSelector } from 'react-redux';
+import { RootState } from './Store/store';
 
 function App() {
   const { progress } = useProgress();
   const [loading, set_loading] = useState<boolean>(true);
-  const [model, hide_model] = useState<boolean>(false);
-  const {pathname } = useLocation();
-  const [hide ,  set_hide] = useState<boolean>(false);
+  const { pathname } = useLocation();
+  const checkLoading = useSelector((state: RootState) => state.auth.loading)
 
-  useEffect(()=>{
-    if(pathname == '/sign-up' || pathname.toLowerCase() == '/login'){
-      set_hide(false);
-    }else {
-      set_hide(true)
-    }
-  },[pathname])
+
+  const shouldShowLayout =
+    !loading &&
+    !checkLoading &&
+    pathname !== "/login" &&
+    pathname !== "/sign-up";
+
 
   useEffect(() => {
-    if (Math.floor(progress) >= 100) {
+    if (Math.floor(progress) >= 95) {
       const timer = setTimeout(() => {
         set_loading(false);
       }, 100);
-      
+
       return () => clearInterval(timer)
     } else {
       set_loading(true)
@@ -37,10 +38,10 @@ function App() {
 
   return !loading ? (
     <div className='w-full h-full overflow-hidden'>
-      {hide  && ( <Navber/>)} 
+      {shouldShowLayout && <Navber />}
       <ScrollToHash />
       <Outlet />
-      {hide && ( <Footer/>)}
+      {shouldShowLayout && <Footer />}
     </div>
   ) : (
     <>

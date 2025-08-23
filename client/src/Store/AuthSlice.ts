@@ -10,18 +10,13 @@ interface props {
         city: string,
         country: string
     } | null,
-    loading: {
-        Loading: boolean,
-    }
+    loading: boolean
 }
 
 const initialState: props = {
     status: false,
     userData: null,
-    loading: {
-        Loading: false,
-    }
-
+    loading: false
 }
 
 const authslice = createSlice({
@@ -37,7 +32,7 @@ const authslice = createSlice({
             state.userData = null;
         },
         set_loading: (state, action: PayloadAction<props["loading"]>) => {
-            state.loading.Loading = action.payload.Loading
+            state.loading = action.payload
         }
     }
 })

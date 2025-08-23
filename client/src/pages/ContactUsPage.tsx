@@ -2,13 +2,12 @@ import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { Mail, Phone, MapPin, Send, MessageSquare } from "lucide-react"
 import { Button } from "../components/ui/button"
-import { Textarea } from "../components/ui/textarea"
 import { useForm } from "react-hook-form"
 import Input from "../components/Input"
 import { useMutation } from "@tanstack/react-query"
 import api from "../api/axios"
 
-const containerVariants = {
+export const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -18,7 +17,7 @@ const containerVariants = {
   },
 }
 
-const itemVariants = {
+export const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 }
@@ -32,9 +31,9 @@ type contact_props = {
 
 export default function ContactUsPage() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const isInView = useInView(ref, { once: false, amount: 0.1 });
   const [isSubmitted , setIsSubmitted] = useState<boolean>(false)
-  const {  control, handleSubmit , formState : {isSubmitting}} = useForm<contact_props>();
+  const {control, handleSubmit , formState : {isSubmitting}} = useForm<contact_props>();
 
   const mutationFn = useMutation({
     mutationFn : async (data : contact_props)=>{
@@ -53,8 +52,7 @@ export default function ContactUsPage() {
   })
 
   return (
-    <section id="get_in_touch" className="container mx-auto px-4 relative mt-14 mb-10" ref={ref}>
-
+    <section id="get_in_touch" className="relative mx-auto  px-4  mt-14 mb-10" ref={ref}>
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -70,7 +68,7 @@ export default function ContactUsPage() {
         </motion.div>
 
         {/* side information  */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-12">
           <motion.div variants={itemVariants} className="space-y-8">
             <h3 className="text-2xl font-bold">Contact Information</h3>
 
@@ -111,7 +109,7 @@ export default function ContactUsPage() {
               </div>
             </div>
 
-            <div className="h-64 md:h-80 relative rounded-lg overflow-hidden">
+            <div className="relative rounded-lg overflow-hidden">
 
             </div>
           </motion.div>

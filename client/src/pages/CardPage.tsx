@@ -18,7 +18,7 @@ const item_varients: Variants = {
 export default function CardPage() {
 
     const section_ref = useRef<HTMLElement | null>(null);
-    const use_in_view = useInView(section_ref, { once: true, amount: 0.2 });
+    const use_in_view = useInView(section_ref, { once: false, amount: 0.2 });
 
        const testimonials = [
         {
@@ -45,7 +45,7 @@ export default function CardPage() {
     ];
 
     return (
-        <section id='card_section' className='w-full h-[90vh] my-14' ref={section_ref}>
+        <section id='card_section' className='relative w-full min-h[100vh] mt-14 mb-10' ref={section_ref}>
             <motion.div
                 variants={item_varients}
                 initial="hidden"

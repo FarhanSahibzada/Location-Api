@@ -1,6 +1,7 @@
 import { User } from '../Schema/user.modal.js';
+import { sendLoginAlertEmail } from '../services/email_service.js';
 import { asyncHandler } from '../utlis/asynchandler.js';
-import { ApiError } from '../utlis/ErrorApi.js(';
+import { ApiError } from '../utlis/ErrorApi.js';
 import { responseApi } from '../utlis/responseApi.js';
 
 // sending coordintes and getting the exact location with the help of opencage
@@ -9,10 +10,11 @@ const reverse_geocoding = async (lat, lng) => {
         const res = await fetch(
             `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${process.env.REVERSE_GEOCODING_API}&language=en`
         );
+
         const data = await res.json();
 
         if (data?.results?.length > 0) {
-            const location = data.results[0].formatted;
+            const location = data.results[0].components;
             return location;
         }
 
@@ -25,32 +27,27 @@ const reverse_geocoding = async (lat, lng) => {
 const distance_ = async (current_lat, current_lng, reg_lat, reg_lng) => {
     try {
         const r = 6371000;
+
         const change_to_rad = (deg) => deg * Math.PI / 180;
         const dlat = change_to_rad(current_lat - reg_lat);
-        const dlng = change_to_rad(current_lng, reg_lng);
+        const dlng = change_to_rad(current_lng - reg_lng);
         const current_lat_rad = change_to_rad(current_lat);
-        // const current_lng_rad = change_to_rad(current_lng);
-        const register_lat_rad = change_to_rad(reg_lng);
-        // const register_lng_rad = change_to_rad(reg_lng);
-
-        console.log("checking dlat=", dlat);
-        console.log("checking dlng", dlng);
-        console.log("checking lat_rad", current_lat_rad);
-        // console.log("checking lng_rad", current_lng_rad);
-        console.log("checking reg_lat", register_lat_rad);
-        // console.log("checking reg_lng", register_lng_rad);
+        const register_lat_rad = change_to_rad(reg_lat);
 
         const a = Math.sin(dlat / 2) * Math.sin(dlat / 2) +
             Math.cos(current_lat_rad) * Math.cos(register_lat_rad) *
-            Math.cos(dlng / 2) * Math.cos(dlng / 2);
+            Math.sin(dlng / 2) * Math.sin(dlng / 2);
 
-        console.log("checking a after half haversine formula= ", a);
-
-        const c = Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        console.log("checking c after most of the  haversine formula= ", c);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         const distance = r * c;
-        console.log(distance);
+
+        if (parseFloat(distance.toFixed(2)) < 100) {
+            return false;
+        } else {
+            return true;
+        }
+
 
     } catch (error) {
         throw new ApiError(500, "error while checking the coordinates tolerance");
@@ -77,6 +74,7 @@ const register = asyncHandler(async (req, res) => {
     if (data && data.success == false) {
         throw new ApiError(500, "error while getting the address of the user");
     }
+
 
     const CheckingifUserAlreadExist = await User.findOne({
         $or: [
@@ -106,7 +104,7 @@ const register = asyncHandler(async (req, res) => {
         throw new ApiError(500, "something went while registering the user");
     }
 
-    const userData = await User.findById(createUser._id);
+    const userData = await User.findById(createUser._id).select("-ip_address");
 
     return res.status(200).json(
         new responseApi(200, userData, "user is successfull created")
@@ -114,19 +112,10 @@ const register = asyncHandler(async (req, res) => {
 
 })
 
-const login = asyncHandler(async () => {
-
-    const { email } = req.body;
-
-    if (!email) {
-        throw new ApiError(403, "can not get the email form frontend");
-    }
-
-    const finduser = await User.findOne({ email });
-    if (!finduser) {
-        throw new ApiError(404, "email is not found please try with the correct email");
-    }
-
+const login = asyncHandler(async (req, res) => {
+    
+    const finduser = req?.user;
+    
     const rawIP =
         req.headers["x-forwarded-for"]?.split(',')[0] ||
         req.connection?.remoteAddress || "8.8.8.8";
@@ -135,14 +124,14 @@ const login = asyncHandler(async () => {
     const data = await response.json();
 
     if (data.success == false) {
-        throw new ApiError(500,"something went please try again later");
+        throw new ApiError(500, "something went please try again later");
     }
 
-     const current_lat = data?.latitude ;
-     const current_lng =  data?.longitude;
-     const reg_lat = finduser?.coords.lat;
-     const reg_lng = finduser?.coords.lng;
-    
+    const current_lat = data?.latitude;
+    const current_lng = data?.longitude;
+    const reg_lat = finduser?.coords.lat;
+    const reg_lng = finduser?.coords.lng;
+
     /**
  * Checks if user is within 50 meters of their registration location.
  * 
@@ -155,18 +144,40 @@ const login = asyncHandler(async () => {
  * @author Farhan Sahibzada
  */
 
+    const bool_value = await distance_(
+        current_lat,
+        current_lng,
+        reg_lat,
+        reg_lng
+    );
 
-    const actuall_address = await reverse_geocoding();
-    console.log("checking the exact location where someone is access user account ==", actuall_address);
+    if (!bool_value) {
+        return res.status(200).json(
+            new responseApi(200, finduser, "user is successfully finded")
+        )
+    }
 
+    const actuall_address = await reverse_geocoding(current_lat, current_lng);
+
+    await sendLoginAlertEmail(finduser.email, {
+        city: actuall_address._normalized_city,
+        country: actuall_address.country,
+        continent: actuall_address.continent
+    })
 
     return res.status(200).json(
         new responseApi(200, finduser, "user is successfully finded")
     )
 
+});
+
+const current_user =  asyncHandler(async (req ,res)=>{
+    res.status(200)
+    .json(new responseApi(200 , req.user , "user_data is successfully getted!!" ))
 })
 
 export {
     register,
-    login
+    login,
+    current_user
 }

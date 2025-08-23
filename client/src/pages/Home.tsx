@@ -8,8 +8,7 @@ import { RootState } from '../Store/store'
 
 export default function Home() {
     const user_login_status = useSelector((state: RootState) => state.auth.status);
-    console.log("status=", user_login_status)
-
+ 
     return (
         <section id='#' className='bg-black/[0.88] p-2  '>
             {!user_login_status ? (

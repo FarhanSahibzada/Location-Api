@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query'
 import authServices from '../firebase/authFun'
 import { useDispatch } from 'react-redux'
 import { login } from '../Store/AuthSlice'
+import { toast, Toaster } from 'sonner'
 
 export interface authProps {
     name: string,
@@ -36,27 +37,35 @@ export default function Sign_in() {
     const dispatch = useDispatch();
 
     const mutationFun = useMutation({
-        mutationFn: async (data: authProps) => {
-            return authServices.createAccount({
-                name: data.name,
-                email: data.email,
-                password: data.password
-            });
+        mutationFn: async (data :{provider : "email" | "google"| "github", payload?: authProps }) => {
+            if(data.provider == "email"){
+                return authServices.createAccount({name : data.payload?.name as string ,  email 
+                    : data.payload?.email as string , password : data.payload?.password as string
+                });
+            }
+            if(data.provider == "google"){
+                return authServices.google_register();
+            }
+            if(data.provider == "github"){
+                console.log("githiu")
+            }
         },
         onSuccess: (data) => {
-            console.log("success", data)
             dispatch(login(data))
+            console.log("success", data)
         },
         onError: (error) => {
             console.log("Error when send the request", error)
-            alert("some went wrong")
+            toast.error("something went wrong please try again")
         }
     })
 
     return (
-        <div className='w-full h-[100vh] p-4  md:p-0  flex items-center justify-center 
-        bg-gradient-to-br  from-blue-200 via-white to-gray-200 '>
-            <div className="shadow-2xl p-4 rounded-xl bg-white">
+        <>
+        <Toaster position='top-center' />
+        <div className='w-full h-[100vh] p-4  md:p-0   flex items-center justify-center 
+        bg-gradient-to-br  from-blue-200 via-white to-gray-200 overflow-y-scroll'>
+            <div className="shadow-2xl p-4 md:mt-20 md:mb-5 rounded-xl bg-white">
                 <div className="text-center">
                     <h2 className="mt-2 text-3xl font-extrabold text-gray-900">Create your account</h2>
                     <p className="mt-2 text-sm text-gray-600">Join us and start your journey</p>
@@ -66,7 +75,7 @@ export default function Sign_in() {
                     <UserRound className="h-12 w-12 text-primary" />
                 </div>
                 {/* Form Start */}
-                <form onSubmit={handleSubmit((data) => mutationFun.mutate(data))} className="space-y-4">
+                <form onSubmit={handleSubmit((data) => mutationFun.mutate({provider : "email" , payload : data}))} className="space-y-4">
                     <div className='relative'>
                         <Contact className="absolute left-3 top-1/2 transform -translate-y-[-37%] text-gray-400" size={20} />
                         <Input<authProps>
@@ -130,6 +139,31 @@ export default function Sign_in() {
                     </div>
                 </form>
 
+                {/* line */}
+                <div className="flex items-center my-4">
+                    <div className="flex-grow border-t border-neutral-400"></div>
+                    <span className="mx-2 text-neutral-500">OR</span>
+                    <div className="flex-grow border-t border-neutral-400"></div>
+                </div>
+                {/*  images */}
+                <div className='flex justify-center gap-4'>
+
+                    <figure className='w-[4rem] hover:bg-slate-200 py-1.5 px-2 rounded-xl cursor-pointer'
+                    onClick={()=> mutationFun.mutate({provider : "google"})}
+                    >
+                        <img src="/google logo.png" alt="image"
+                            className='w-full h-full object-cover'
+                            />
+                    </figure>
+                    <figure className='w-[4rem] hover:bg-slate-200 py-1.5 px-2 rounded-xl cursor-pointer'
+                    onClick={()=> mutationFun.mutate({provider : "github"})}
+                    >
+                        <img src="/github logo.png" alt="image"
+                            className='w-full h-full object-cover'
+                            />
+                    </figure>
+                </div>
+
                 <p className="text-center text-base py-4 text-gray-600">
                     Already have an account?{' '}
                     <Link to={"/Login"} className="font-medium text-blue-600 text-primary hover:text-primary/80 transition-colors">
@@ -138,5 +172,6 @@ export default function Sign_in() {
                 </p>
             </div>
         </div>
+                            </>
     )
 }

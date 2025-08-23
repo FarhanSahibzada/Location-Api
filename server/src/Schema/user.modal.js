@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         requied: true
     },
     ip_address: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
