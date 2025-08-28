@@ -1,13 +1,12 @@
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  signOut,
-  linkWithCredential,
-  EmailAuthProvider,
-  fetchSignInMethodsForEmail 
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+    linkWithCredential,
+    GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, google_provider , github_provider } from "./firebase.config";
+import { auth, google_provider, github_provider } from "./firebase.config";
 import { FirebaseError } from "firebase/app";
 import { AxiosError } from "axios";
 import api from "../api/axios/index";
@@ -93,17 +92,17 @@ export class AuthService {
 
     async google_register() {
         try {
-            // 1) firebase google registerinr  
-            const { user } = await signInWithPopup(this.auth, google_provider);
-            if (!user) return false;
+            const result = await signInWithPopup(this.auth, google_provider);
+            const user = result.user;
 
-            // 2) Backend login checking user already login or not 
+            // Try login on backend
             try {
-                const loginRes = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {}); // token header interceptor laga hua hai
+                const loginRes = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {});
                 return loginRes.data?.data;
             } catch (e) {
                 const ax = e as AxiosError;
-                // if we can not find the user
+
+                // User not found on backend → register
                 if (ax.response?.status === 404) {
                     const payload = {
                         name: user.displayName || "Unknown",
@@ -113,14 +112,45 @@ export class AuthService {
                     const regRes = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, payload);
                     return regRes.data?.data;
                 }
+
                 throw e;
             }
-        } catch (error) {
-            console.error("Google sign-in failed:", error);
+        } catch (error: any) {
+            console.error("Google sign-in failed:", error.code);
             return false;
         }
     }
-    
+
+    async github_register() {
+        try {
+            const { user } = await signInWithPopup(this.auth, github_provider);
+            if (!user) return false
+
+             try {
+                const loginRes = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {});
+                return loginRes.data?.data;
+            } catch (e) {
+                const ax = e as AxiosError;
+
+                // User not found on backend → register
+                if (ax.response?.status === 404) {
+                    const payload = {
+                        name: user.displayName || "Unknown",
+                        email: user.email,
+                        firebase_uid: user.uid,
+                    };
+                    const regRes = await api.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`, payload);
+                    return regRes.data?.data;
+                }
+
+                throw e;
+            }
+            
+        } catch (error : any) {
+            console.error("github sign-in failed", error.code);
+            return false;
+        }
+    }
 
 }
 

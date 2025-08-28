@@ -40,7 +40,7 @@ export default function Login_in() {
                 return authServices.google_register();
             }
             if (data.provider == "github") {
-                console.log("githiu")
+                return authServices.github_register();
             }
         },
         onSuccess: (data) => {

@@ -24,13 +24,13 @@ export default function MainHomePage() {
 
   useEffect(() => {
     if (isSuccess && data) {
-      toast.success("Data fetched successfully!");
+      toast.success("Welcome Back!");
       dispatch(login(data));
       dispatch(set_loading(false));
     }
     if (isError) {
       console.error("there is a error ");
-      toast.error("user is not found please login to your account ");
+      toast.error("please login to your account ");
       dispatch(set_loading(false));
     }
   }, [isSuccess, isError, data, error, dispatch]);

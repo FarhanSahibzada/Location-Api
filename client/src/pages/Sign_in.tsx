@@ -47,12 +47,12 @@ export default function Sign_in() {
                 return authServices.google_register();
             }
             if(data.provider == "github"){
-                console.log("githiu")
+                return authServices.github_register();
             }
         },
         onSuccess: (data) => {
             dispatch(login(data))
-            console.log("success", data)
+            
         },
         onError: (error) => {
             console.log("Error when send the request", error)

@@ -19,8 +19,8 @@ function App() {
   const shouldShowLayout =
     !loading &&
     !checkLoading &&
-    pathname !== "/login" &&
-    pathname !== "/sign-up";
+    pathname.toLowerCase() !== "/login" &&
+    pathname.toLowerCase() !== "/sign-up";
 
 
   useEffect(() => {

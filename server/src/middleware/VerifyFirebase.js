@@ -12,11 +12,11 @@ const VerifyToken = async (req, res, next) => {
 
     try {
         const decodedToken = await admin.auth().verifyIdToken(token)
-
+  
         if (!decodedToken) {
             return next(new ApiError("token is not decoded", 403));
         }
-       
+    
         const user = await User.findOne({ firebase_uid: decodedToken?.uid }).select("-ip_address");
 
         if (!user) {

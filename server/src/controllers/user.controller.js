@@ -84,7 +84,7 @@ const register = asyncHandler(async (req, res) => {
     })
 
     if (CheckingifUserAlreadExist) {
-        return res.status(200).json(new responseApi(200, CheckingifUserAlreadExist, "user is already created"));
+        return res.status(200).json(new responseApi(200, CheckingifUserAlreadExist, "user is already exist"));
     };
 
     const createUser = await User.create({
